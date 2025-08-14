@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>欢迎！</h1>
+  <p>这是一个“简化版 ChatGPT”起步项目。</p>
+  <ul class="cards">
+    {% for p in projects %}
+      <li class="card">
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.desc }}</p>
+        <a class="btn" href="/{{ p.slug }}">进入</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
