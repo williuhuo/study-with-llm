@@ -30,3 +30,12 @@ nav a:hover { color: var(--fg); }
 
 .chat-form { display:flex; gap:8px; }
 .chat-form input { flex:1; padding:10px; border-radius:10px; border:1px solid #1b2630; background:#0e1720; color:var(--fg); }
+
+/* 气泡操作区 + 复制按钮 */
+.bubble-actions{margin-top:6px;display:flex;gap:8px;align-items:center}
+.copy-btn{
+  background:#0b1220;border:1px solid #243244;color:#cbd5e1;
+  padding:4px 8px;border-radius:8px;cursor:pointer
+}
+.copy-btn:active{transform:translateY(1px)}
+.copy-ok{opacity:.9}

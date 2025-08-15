@@ -6,6 +6,29 @@
   const sendBtn = document.getElementById("chat-send");
   const clearBtn = document.getElementById("chat-clear");
 
+  // 复制到剪贴板（优先使用 Clipboard API，失败则降级）
+  async function copyText(text, btn){
+    try{
+      if (navigator.clipboard && window.isSecureContext !== false) {
+        await navigator.clipboard.writeText(text || "");
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = text || "";
+        ta.style.position = "fixed"; ta.style.left = "-9999px";
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        document.execCommand("copy"); document.body.removeChild(ta);
+      }
+      if (btn){
+        const prev = btn.textContent;
+        btn.textContent = "已复制 ✓";
+        btn.classList.add("copy-ok");
+        setTimeout(()=>{ btn.textContent = prev; btn.classList.remove("copy-ok"); }, 1200);
+      }
+    }catch(e){
+      alert("复制失败：" + e.message);
+    }
+  }
+
   // --- 工具函数 ---
   function nowTime() {
     const d = new Date();
@@ -15,19 +38,28 @@
   }
 
   function appendBubble(role, text, time) {
-    const wrap = document.createElement("div");
-    const bubble = document.createElement("div");
-    bubble.className = "bubble " + (role === "user" ? "bubble-user" : "bubble-bot");
-    bubble.textContent = text;
+      const wrap = document.createElement("div");
 
-    const meta = document.createElement("div");
-    meta.className = "meta";
-    meta.textContent = (role === "user" ? "我" : "机器人") + " · " + (time || nowTime());
+      const bubble = document.createElement("div");
+      bubble.className = "bubble " + (role === "user" ? "bubble-user" : "bubble-bot");
+      bubble.textContent = text;
 
-    wrap.appendChild(bubble);
-    wrap.appendChild(meta);
-    log.appendChild(wrap);
-    log.scrollTop = log.scrollHeight;
+      // === 新增: 复制按钮 ===
+      const copyBtn = document.createElement("button");
+      copyBtn.className = "copy-btn";
+      copyBtn.textContent = "复制本气泡内容";
+      copyBtn.addEventListener("click", () => copyText(text, copyBtn));
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = (role === "user" ? "我" : "机器人") + " · " + (time || nowTime());
+
+      wrap.appendChild(bubble);
+      wrap.appendChild(copyBtn); // 把按钮放在 meta 前面
+      wrap.appendChild(meta);
+
+      log.appendChild(wrap);
+      log.scrollTop = log.scrollHeight;
   }
 
   function showTyping() {
