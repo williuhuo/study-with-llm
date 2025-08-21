@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}文档分析器 · PDF/PPT解析{% endblock %}
+{% block content %}
+<div class="analyzer-container">
+  <!-- 左侧：文件显示区 -->
+  <div class="panel file-panel" id="file-panel">
+    <div class="panel-header">
+      <h3>原文档</h3>
+    </div>
+    <div class="panel-content">
+      <div id="file-upload-area" class="upload-area">
+        <div class="upload-prompt">
+          <div class="upload-icon">📄</div>
+          <h4>拖拽文件到此处或点击上传</h4>
+          <p>支持 PDF、PPT、PPTX 格式</p>
+          <input type="file" id="file-input" accept=".pdf,.ppt,.pptx" style="display: none;">
+          <button class="btn" onclick="document.getElementById('file-input').click()">选择文件</button>
+        </div>
+      </div>
+      <div id="file-preview" class="file-preview" style="display: none;">
+        <div class="file-info">
+          <span id="file-name"></span>
+          <span id="file-size"></span>
+        </div>
+        <div id="file-content" class="file-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：翻译显示区 -->
+  <div class="panel translation-panel" id="translation-panel">
+    <div class="panel-header">
+      <h3>AI分析结果</h3>
+      <button id="analyze-btn" class="btn" style="display: none;">开始分析</button>
+    </div>
+    <div class="panel-content">
+      <div id="analysis-waiting" class="waiting-area">
+        <p>请先上传文件</p>
+      </div>
+      <div id="analysis-progress" class="progress-area" style="display: none;">
+        <div class="progress-info">
+          <h4>正在分析文档...</h4>
+          <p id="progress-text">准备中...</p>
+        </div>
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <div id="progress-percentage">0%</div>
+      </div>
+      <div id="analysis-result" class="result-area" style="display: none;">
+        <div id="markdown-content" class="markdown-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 聊天窗口 -->
+  <div class="panel chat-panel" id="chat-panel" style="display: none;">
+    <div class="panel-header">
+      <h3>AI助手</h3>
+      <button id="toggle-chat" class="btn btn-ghost">收起</button>
+    </div>
+    <div class="panel-content">
+      <div id="analyzer-chat-log" class="chat-log"></div>
+      <form id="analyzer-chat-form" class="chat-form" autocomplete="off">
+        <input id="analyzer-chat-input" type="text" placeholder="询问关于文档的问题..." required />
+        <button type="submit" class="btn">发送</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 拖拽调整大小的分隔线 -->
+<div class="resizer" id="resizer-1"></div>
+<div class="resizer" id="resizer-2" style="display: none;"></div>
+
+<script src="{{ url_for('static', filename='js/analyzer.js') }}"></script>
+{% endblock %}
