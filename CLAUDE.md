@@ -26,7 +26,7 @@ This is a simplified ChatGPT-like web application built with Flask. It features 
 
 ```bash
 # Install dependencies
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 # Run the application
 python app.py
